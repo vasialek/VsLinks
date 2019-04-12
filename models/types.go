@@ -1,0 +1,25 @@
+package models
+
+// Response is base JSON response
+type Response struct {
+	Status  bool   `json:"status"`
+	Message string `json:"message"`
+}
+
+// Link is model for create/transfer links
+type Link struct {
+	LinkID      string `json:"link_id"`
+	UserID      string `json:"user_id"`
+	TypeID      int    `json:"type_id"`
+	Title       string `json:"title"`
+	Description string `json:"description"`
+	URL         string `json:"url"`
+	Rate        int    `json:"rate"`
+}
+
+// LinkCategory to store information about categories
+type LinkCategory struct {
+	LinkCategoryID string `json:"link_category_id"`
+	UserID         string `json:"user_id"`
+	Name           string `json:"name"`
+}
