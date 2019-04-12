@@ -2,7 +2,7 @@ package routers
 
 import (
 	"github.com/gorilla/mux"
-	"github.com/vasialek/VsLinks/data/controllers"
+	"github.com/vasialek/VsLinks/controllers"
 )
 
 // InitLinkRoutes initailizes routing to handle links

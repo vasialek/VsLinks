@@ -56,8 +56,10 @@ func GetAllLinks() ([]models.Link, error) {
 func getDatabaseClient() (db *db.Client, ctx context.Context, err error) {
 	c := context.Background()
 	opt := option.WithCredentialsFile("./keys/vsm-links-db-firebase-adminsdk-gubgg-98be377e48.json")
+	// opt := option.WithCredentialsFile("./keys/vs-links-db-production-726k3-c42e727a62.json")
 	config := &firebase.Config{
 		DatabaseURL: "https://vsm-links-db.firebaseio.com/",
+		// DatabaseURL: "https://vs-links-db.firebaseio.com/",
 	}
 
 	app, err := firebase.NewApp(c, config, opt)
