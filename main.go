@@ -7,9 +7,9 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/aleksej.vasinov/visma-links/data"
-	"github.com/aleksej.vasinov/visma-links/models"
-	"github.com/gorilla/mux"
+	"github.com/vasialek/VsLinks/data"
+	"github.com/vasialek/VsLinks/models"
+	"github.com/vasialek/VsLinks/routers"
 )
 
 // var links = make(map[string]models.Link)
@@ -26,7 +26,8 @@ func main() {
 	// uid, _ := uuid.NewV4()
 	// links[uid.String()] = models.Link{Title: "New", Url: "http://www.golang.com"}
 
-	r := mux.NewRouter().StrictSlash(false)
+	// r := mux.NewRouter().StrictSlash(false)
+	r := routers.InitRoutes()
 	r.HandleFunc("/", indexHandler)
 	r.HandleFunc("/links", getLinks).Methods("GET")
 	r.HandleFunc("/links", createLink).Methods("POST")

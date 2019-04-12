@@ -6,8 +6,8 @@ import (
 
 	"firebase.google.com/go"
 	"firebase.google.com/go/db"
-	"github.com/aleksej.vasinov/visma-links/helpers"
-	"github.com/aleksej.vasinov/visma-links/models"
+	"github.com/vasialek/VsLinks/helpers"
+	"github.com/vasialek/VsLinks/models"
 	"google.golang.org/api/option"
 )
 

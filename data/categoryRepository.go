@@ -1,7 +1,7 @@
 package data
 
 import (
-	"github.com/aleksej.vasinov/visma-links/models"
+	"github.com/vasialek/VsLinks/models"
 	"github.com/zabawaba99/firego"
 )
 
