@@ -3,11 +3,9 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"log"
 	"net/http"
 	"os"
 
-	"github.com/vasialek/VsLinks/data"
 	"github.com/vasialek/VsLinks/models"
 	"github.com/vasialek/VsLinks/routers"
 )
@@ -26,11 +24,8 @@ func main() {
 	// uid, _ := uuid.NewV4()
 	// links[uid.String()] = models.Link{Title: "New", Url: "http://www.golang.com"}
 
-	// r := mux.NewRouter().StrictSlash(false)
 	r := routers.InitRoutes()
 	r.HandleFunc("/", indexHandler)
-	r.HandleFunc("/links", getLinks).Methods("GET")
-	r.HandleFunc("/links", createLink).Methods("POST")
 
 	server := &http.Server{
 		Addr:    port,
@@ -40,61 +35,62 @@ func main() {
 	fmt.Println("Going to listen on", port)
 	server.ListenAndServe()
 }
-func createLink(w http.ResponseWriter, rq *http.Request) {
-	log.Println("Going to create link...")
-	var model models.Link
-	err := json.NewDecoder(rq.Body).Decode(&model)
-	if err != nil {
-		log.Printf("createLink: %s\n", err)
-		reportError(w, "Error deserializing Link to be created.", err)
-		return
-	}
 
-	log.Printf("  link to create: %s\n", model.URL)
-	err = data.CreateLink(model)
-	if err != nil {
-		reportError(w, "Can't save Link in database.", err)
-		return
-	}
+// func createLink(w http.ResponseWriter, rq *http.Request) {
+// 	log.Println("Going to create link...")
+// 	var model models.Link
+// 	err := json.NewDecoder(rq.Body).Decode(&model)
+// 	if err != nil {
+// 		log.Printf("createLink: %s\n", err)
+// 		reportError(w, "Error deserializing Link to be created.", err)
+// 		return
+// 	}
 
-	resp := models.Response{
-		Message: fmt.Sprintf("New Link `%s` was created", model.Title),
-		Status:  true,
-	}
-	ba, err := json.Marshal(&resp)
-	if err != nil {
-		reportError(w, "Can't serialize positive JSON response", err)
-		return
-	}
+// 	log.Printf("  link to create: %s\n", model.URL)
+// 	err = data.CreateLink(model)
+// 	if err != nil {
+// 		reportError(w, "Can't save Link in database.", err)
+// 		return
+// 	}
 
-	w.WriteHeader(http.StatusOK)
-	w.Header().Set("Content-Type", "application/json")
-	w.Write(ba)
-}
+// 	resp := models.Response{
+// 		Message: fmt.Sprintf("New Link `%s` was created", model.Title),
+// 		Status:  true,
+// 	}
+// 	ba, err := json.Marshal(&resp)
+// 	if err != nil {
+// 		reportError(w, "Can't serialize positive JSON response", err)
+// 		return
+// 	}
 
-func getLinks(w http.ResponseWriter, request *http.Request) {
-	// var list []models.Link
+// 	w.WriteHeader(http.StatusOK)
+// 	w.Header().Set("Content-Type", "application/json")
+// 	w.Write(ba)
+// }
 
-	// for _, value := range links {
-	// 	list = append(list, value)
-	// }
+// func getLinks(w http.ResponseWriter, request *http.Request) {
+// 	// var list []models.Link
 
-	list, err := data.GetAllLinks()
-	if err != nil {
-		reportError(w, "Error getting Links from database.", err)
-		return
-	}
+// 	// for _, value := range links {
+// 	// 	list = append(list, value)
+// 	// }
 
-	b, err := json.Marshal(&list)
-	if err != nil {
-		reportError(w, "Error JSONing", err)
-		return
-	}
+// 	list, err := data.GetAllLinks()
+// 	if err != nil {
+// 		reportError(w, "Error getting Links from database.", err)
+// 		return
+// 	}
 
-	w.WriteHeader(http.StatusOK)
-	w.Header().Set("Content-Type", "application/json")
-	w.Write(b)
-}
+// 	b, err := json.Marshal(&list)
+// 	if err != nil {
+// 		reportError(w, "Error JSONing", err)
+// 		return
+// 	}
+
+// 	w.WriteHeader(http.StatusOK)
+// 	w.Header().Set("Content-Type", "application/json")
+// 	w.Write(b)
+// }
 
 func indexHandler(w http.ResponseWriter, request *http.Request) {
 	w.Write([]byte("Welcome to MemoUs API server"))
