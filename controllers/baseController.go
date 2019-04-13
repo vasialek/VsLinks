@@ -8,6 +8,18 @@ import (
 	"github.com/vasialek/VsLinks/models"
 )
 
+func sendDataResponse(w http.ResponseWriter, data interface{}) error {
+	ba, err := json.Marshal(&data)
+	if err != nil {
+		return err
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	w.Write(ba)
+	return nil
+}
+
 func reportError(w http.ResponseWriter, msg string, err error) {
 	fmt.Println(err)
 	resp := models.Response{
