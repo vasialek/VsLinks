@@ -14,11 +14,12 @@ import (
 
 func main() {
 	fmt.Printf("Start working on %s...\n", models.Settings.GetEnvironment())
+	url := ""
 	port := os.Getenv("PORT")
 	if len(port) < 1 {
-		port = ":8079"
+		url = "127.0.0.1:8079"
 	} else {
-		port = ":" + port
+		url = ":" + port
 	}
 
 	// uid, _ := uuid.NewV4()
@@ -27,8 +28,9 @@ func main() {
 	r := routers.InitRoutes()
 	r.HandleFunc("/", indexHandler)
 
+	fmt.Printf("Listening on %s\n", url)
 	server := &http.Server{
-		Addr:    port,
+		Addr:    url,
 		Handler: r,
 	}
 
