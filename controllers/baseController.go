@@ -21,7 +21,9 @@ func sendDataResponse(w http.ResponseWriter, data interface{}) error {
 }
 
 func reportError(w http.ResponseWriter, msg string, err error) {
-	fmt.Println(err)
+	if err != nil {
+		fmt.Println(err)
+	}
 	resp := models.Response{
 		Status:  false,
 		Message: msg,

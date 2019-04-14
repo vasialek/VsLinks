@@ -9,7 +9,8 @@ import (
 func InitCategoryRoutes(r *mux.Router) *mux.Router {
 	cc := controllers.NewCategoriesController()
 
-	r.HandleFunc("/api/v1/category", cc.GetActiveCategories)
+	r.HandleFunc("/api/v1/category", cc.CreateCategory).Methods("POST")
+	r.HandleFunc("/api/v1/category", cc.GetActiveCategories).Methods("GET")
 
 	return r
 }
