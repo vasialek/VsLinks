@@ -1,5 +1,7 @@
 package models
 
+import "time"
+
 // TypeOfResource use to set status and type of resources, like LinkCategory
 type TypeOfResource int
 
@@ -22,13 +24,14 @@ type Response struct {
 
 // Link is model for create/transfer links
 type Link struct {
-	LinkID      string `json:"link_id"`
-	UserID      string `json:"user_id"`
-	TypeID      int    `json:"type_id"`
-	Title       string `json:"title"`
-	Description string `json:"description"`
-	URL         string `json:"url"`
-	Rate        int    `json:"rate"`
+	LinkID      string    `json:"link_id"`
+	UserID      string    `json:"user_id"`
+	TypeID      int       `json:"type_id"`
+	Title       string    `json:"title"`
+	Description string    `json:"description"`
+	URL         string    `json:"url"`
+	Rate        int       `json:"rate"`
+	CreatedAt   time.Time `json:"created_at"`
 }
 
 // LinkCategory to store information about categories
@@ -37,4 +40,5 @@ type LinkCategory struct {
 	StatusID       TypeOfResource `json:"status_id"`
 	UserID         string         `json:"user_id"`
 	Name           string         `json:"name"`
+	CreatedAt      time.Time      `json:"created_at"`
 }

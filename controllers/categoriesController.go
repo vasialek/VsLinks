@@ -34,16 +34,22 @@ func (cc *CategoriesController) GetActiveCategories(w http.ResponseWriter, rq *h
 
 // CreateCategory creates Link category or returns errors
 func (cc *CategoriesController) CreateCategory(w http.ResponseWriter, rq *http.Request) {
-	category := models.LinkCategory{}
+	category := &models.LinkCategory{}
 
 	if err := helpers.Decode(rq, &category); err != nil {
 		reportError(w, "Error decoding Link category to create", err)
 		return
 	}
 
-	errors := cc.validate(&category)
+	errors := cc.validate(category)
 	if len(errors) > 0 {
 		reportError(w, strings.Join(errors, ". "), nil)
+		return
+	}
+
+	category, err := cc.repository.CreateCategory(*category)
+	if err != nil {
+		reportError(w, "Error creating Link category", err)
 		return
 	}
 

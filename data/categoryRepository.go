@@ -5,7 +5,9 @@ import (
 	"fmt"
 	"io/ioutil"
 	"log"
+	"time"
 
+	"github.com/vasialek/VsLinks/helpers"
 	"github.com/vasialek/VsLinks/models"
 	"github.com/zabawaba99/firego"
 	"golang.org/x/oauth2"
@@ -20,6 +22,29 @@ type CategoryRepository struct {
 // NewCategoryRepository returns instance of CategoryRepository
 func NewCategoryRepository() *CategoryRepository {
 	return &CategoryRepository{}
+}
+
+// CreateCategory creates Link category in Firebase
+func (cr *CategoryRepository) CreateCategory(category models.LinkCategory) (*models.LinkCategory, error) {
+	fb, err := cr.getDatabaseApp()
+	if err != nil {
+		log.Printf("CategoryRepository::CreateCategory: Error connecting to Firebase. %s\n", err)
+		return nil, err
+	}
+
+	category.LinkCategoryID = helpers.GetUID()
+	log.Printf("Going to create Link category `%s` with ID `%s` (status %d)...", category.Name, category.LinkCategoryID, category.StatusID)
+	category.CreatedAt = time.Now()
+
+	// val := make(map[string]models.LinkCategory)
+	// val[category.LinkCategoryID] = category
+	// if err = fb.Child("category").Child(category.LinkCategoryID).Set(val); err != nil {
+	if err = fb.Child("category").Child(category.LinkCategoryID).Set(category); err != nil {
+		log.Printf("CategoryRepository::CreateCategory: Error creating LinkCategory. %s\n", err)
+		return nil, err
+	}
+
+	return &category, nil
 }
 
 // GetAllActive returns list of categories for links
