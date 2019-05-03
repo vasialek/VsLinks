@@ -22,6 +22,15 @@ type Response struct {
 	Message string `json:"message"`
 }
 
+// User represents user who is able to use VsLinks system
+type User struct {
+	UserID   string         `json:"user_id"`
+	StatusID TypeOfResource `json:"status_id"`
+	Name     string         `json:"name"`
+	Email    string         `json:"email"`
+	Password string         `json:"password"`
+}
+
 // Link is model for create/transfer links
 type Link struct {
 	LinkID         string    `json:"link_id"`

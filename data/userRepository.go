@@ -1,0 +1,54 @@
+package data
+
+import (
+	"errors"
+
+	"github.com/vasialek/VsLinks/models"
+	"github.com/zabawaba99/firego"
+)
+
+// UserRepository provides access to User table as object
+type UserRepository struct {
+	db *firego.Firebase
+}
+
+// NewUserRepository returns instance of UserRepository
+func NewUserRepository() *UserRepository {
+	return &UserRepository{}
+}
+
+// GetAllUsers returns list of all users from database
+func (ur *UserRepository) GetAllUsers() ([]models.User, error) {
+	// TODO: create database
+	users := make([]models.User, 2)
+	users[0] = models.User{
+		UserID:   "2677b0d2-009b-414b-92da-f8d5cc65efa1",
+		StatusID: models.ActivePublic,
+		Name:     "Aleksej V.",
+		Email:    "proglamer@gmail.com",
+		Password: "xEHdaERHMev2",
+	}
+	users[1] = models.User{
+		UserID:   "7c79c65f-57d4-4e2b-be6b-7591ede15f0a",
+		StatusID: models.ActivePublic,
+		Name:     "Andrej N.",
+		Email:    "anikolskij@gmail.com",
+		Password: "RnE5XwB2zuhP",
+	}
+
+	return users, nil
+}
+
+// Login returns logged in user or error
+func (ur *UserRepository) Login(email, password string) (user models.User, err error) {
+	// Till w/o database
+	users, _ := ur.GetAllUsers()
+
+	for _, u := range users {
+		if u.Email == email && u.Password == password {
+			return u, nil
+		}
+	}
+
+	return user, errors.New("Incorrect email/password")
+}
