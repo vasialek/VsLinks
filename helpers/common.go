@@ -7,6 +7,7 @@ import (
 	"time"
 
 	uuid "github.com/satori/go.uuid"
+	"golang.org/x/crypto/bcrypt"
 )
 
 // GetUID returns UID
@@ -32,4 +33,19 @@ func Decode(rq *http.Request, data interface{}) error {
 	}
 
 	return nil
+}
+
+// CheckPasswordHash returns true if hashed password is OK
+func CheckPasswordHash(passwordHash, passwordClear string) bool {
+	err := bcrypt.CompareHashAndPassword([]byte(passwordHash), []byte(passwordClear))
+	return err == nil
+}
+
+// CalculateHash returns hashed string based on password
+func CalculateHash(password string) string {
+	hash, err := bcrypt.GenerateFromPassword([]byte(password), 10)
+	if err != nil {
+		panic(err)
+	}
+	return string(hash)
 }
