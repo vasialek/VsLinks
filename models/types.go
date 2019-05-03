@@ -24,14 +24,15 @@ type Response struct {
 
 // Link is model for create/transfer links
 type Link struct {
-	LinkID      string    `json:"link_id"`
-	UserID      string    `json:"user_id"`
-	TypeID      int       `json:"type_id"`
-	Title       string    `json:"title"`
-	Description string    `json:"description"`
-	URL         string    `json:"url"`
-	Rate        int       `json:"rate"`
-	CreatedAt   time.Time `json:"created_at"`
+	LinkID         string    `json:"link_id"`
+	UserID         string    `json:"user_id"`
+	TypeID         int       `json:"type_id"`
+	LinkCategoryID string    `json:"link_category_id"`
+	Title          string    `json:"title"`
+	Description    string    `json:"description"`
+	URL            string    `json:"url"`
+	Rate           int       `json:"rate"`
+	CreatedAt      time.Time `json:"created_at"`
 }
 
 // LinkCategory to store information about categories
