@@ -3,6 +3,7 @@ package data
 import (
 	"errors"
 
+	"github.com/vasialek/VsLinks/helpers"
 	"github.com/vasialek/VsLinks/models"
 	"github.com/zabawaba99/firego"
 )
@@ -26,14 +27,14 @@ func (ur *UserRepository) GetAllUsers() ([]models.User, error) {
 		StatusID: models.ActivePublic,
 		Name:     "Aleksej V.",
 		Email:    "proglamer@gmail.com",
-		Password: "xEHdaERHMev2",
+		Password: "$2a$10$ooKHvSTAPVoAmZZceJxgv.pPsK9lPSPcyigjpy/2l/G8w1Way194K",
 	}
 	users[1] = models.User{
 		UserID:   "7c79c65f-57d4-4e2b-be6b-7591ede15f0a",
 		StatusID: models.ActivePublic,
 		Name:     "Andrej N.",
 		Email:    "anikolskij@gmail.com",
-		Password: "RnE5XwB2zuhP",
+		Password: "$2a$10$EvXnbkZ.uFZcuk6Jnxg1i.cpRCmLA1gILdRcDXIVY2H6265K7K05u",
 	}
 
 	return users, nil
@@ -45,7 +46,7 @@ func (ur *UserRepository) Login(email, password string) (user models.User, err e
 	users, _ := ur.GetAllUsers()
 
 	for _, u := range users {
-		if u.Email == email && u.Password == password {
+		if u.Email == email && helpers.CheckPasswordHash(u.Password, password) {
 			return u, nil
 		}
 	}
