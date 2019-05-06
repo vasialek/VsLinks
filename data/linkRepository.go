@@ -22,6 +22,10 @@ type LinkRepository struct {
 	db *firego.Firebase
 }
 
+func NewLinkRepository() *LinkRepository {
+	return &LinkRepository{}
+}
+
 // CreateLink creates new Link in database
 func CreateLink(link models.Link) error {
 	c, ctx, err := getDatabaseClient()
