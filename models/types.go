@@ -1,6 +1,10 @@
 package models
 
-import "time"
+import (
+	"time"
+
+	jwt "github.com/dgrijalva/jwt-go"
+)
 
 // TypeOfResource use to set status and type of resources, like LinkCategory
 type TypeOfResource int
@@ -29,6 +33,14 @@ type User struct {
 	Name     string         `json:"name"`
 	Email    string         `json:"email"`
 	Password string         `json:"password"`
+}
+
+// UserClaims stores user attributes
+type UserClaims struct {
+	UserID string `json:"user_id"`
+	Name   string `json:"name"`
+	Email  string `json:"email"`
+	jwt.StandardClaims
 }
 
 // Link is model for create/transfer links
