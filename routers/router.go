@@ -15,6 +15,9 @@ func InitRoutes() *mux.Router {
 
 	router = InitCategoryRoutes(router)
 	router = InitLinkRoutes(router)
+	router = InitAuthRoutes(router)
+
+	router.Use(authenticateMiddleware)
 
 	if models.Settings.IsDevEnvironment {
 		fmt.Println(dumpRoutes(router))
