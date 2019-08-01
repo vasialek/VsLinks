@@ -6,6 +6,9 @@ import (
 	jwt "github.com/dgrijalva/jwt-go"
 )
 
+// UserData stores information about logged in user
+var UserData *User
+
 // TypeOfResource use to set status and type of resources, like LinkCategory
 type TypeOfResource int
 
@@ -20,11 +23,28 @@ const (
 	DeletedPrivate
 )
 
+// #region JSON requests/responses
+
 // Response is base JSON response
 type Response struct {
 	Status  bool   `json:"status"`
 	Message string `json:"message"`
 }
+
+// LoginRequest model to authenticate user
+type LoginRequest struct {
+	Email    string `json:"email"`
+	Password string `json:"password"`
+	ClientID string `json:"client_id"`
+}
+
+// LoginResponse model for successful or not login
+type LoginResponse struct {
+	Status bool   `json:"status"`
+	Jwt    string `json:"jwt"`
+}
+
+// #endregion
 
 // User represents user who is able to use VsLinks system
 type User struct {
