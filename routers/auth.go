@@ -6,13 +6,17 @@ import (
 	"strings"
 
 	"github.com/gorilla/mux"
+	"github.com/vasialek/VsLinks/controllers"
+	"github.com/vasialek/VsLinks/helpers"
+	"github.com/vasialek/VsLinks/models"
 )
 
 // InitAuthRoutes initializes routes for authentication
 func InitAuthRoutes(r *mux.Router) *mux.Router {
-	r.HandleFunc("/api/v1/auth", func(w http.ResponseWriter, rq *http.Request) {
-		w.Write([]byte("Login..."))
-	}).Methods("POST")
+	ac := controllers.NewAuthController()
+
+	r.HandleFunc("/api/v1/auth", ac.Login).Methods("POST")
+
 	return r
 }
 
@@ -25,6 +29,15 @@ func authenticateMiddleware(next http.Handler) http.Handler {
 				http.Error(w, "Forbidden", http.StatusForbidden)
 				return
 			}
+
+			ah := helpers.NewAuthHelper()
+			u, err := ah.ValidateHeader(authorizationHeader)
+			if err != nil {
+				http.Error(w, "Invalid user", http.StatusUnauthorized)
+				return
+			}
+
+			models.UserData = u
 		}
 
 		next.ServeHTTP(w, rq)
