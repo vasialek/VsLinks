@@ -9,7 +9,7 @@ import (
 func InitLinkRoutes(r *mux.Router) *mux.Router {
 	lr := controllers.NewLinksController()
 
-	r.HandleFunc("/api/v1/links", lr.GetLinks)
+	r.HandleFunc("/api/v1/links", lr.GetLinks).Methods("GET")
 	r.HandleFunc("/api/v1/links", lr.CreateLink).Methods("POST")
 	r.HandleFunc("/api/v1/links/{linkid}/category/{categoryid}", lr.SetLinkCategory).Methods("POST")
 

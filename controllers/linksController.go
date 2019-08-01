@@ -5,9 +5,11 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"time"
 
 	"github.com/gorilla/mux"
 	"github.com/vasialek/VsLinks/data"
+	"github.com/vasialek/VsLinks/helpers"
 	"github.com/vasialek/VsLinks/models"
 )
 
@@ -53,7 +55,9 @@ func (lc *LinksController) CreateLink(w http.ResponseWriter, rq *http.Request) {
 		return
 	}
 
-	log.Printf("  link to create: %s\n", model.URL)
+	model.UserID = models.UserData.UserID
+	model.CreatedAt = time.Now()
+	helpers.DumpLink(&model)
 	err = data.CreateLink(model)
 	if err != nil {
 		reportError(w, "Can't save Link in database.", err)
