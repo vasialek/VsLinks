@@ -25,23 +25,27 @@ func NewLinksController() *LinksController {
 	}
 }
 
+// Test to test links
+func (lc *LinksController) Test(w http.ResponseWriter, rq *http.Request) {
+	links, err := lc.repository.GetUserLinks("2677b0d2-009b-414b-92da-f8d5cc65efa1")
+	if err != nil {
+		reportError(w, "Error getting user links", err)
+		return
+	}
+
+	sendDataResponse(w, links)
+}
+
 // GetLinks returns list of links for current user
 func (lc *LinksController) GetLinks(w http.ResponseWriter, rq *http.Request) {
-	list, err := data.GetAllLinks()
+	fmt.Printf("Got request to get links for User ID `%s`...", models.UserData.UserID)
+	links, err := lc.repository.GetUserLinks(models.UserData.UserID)
 	if err != nil {
 		reportError(w, "Error getting Links from database.", err)
 		return
 	}
 
-	b, err := json.Marshal(&list)
-	if err != nil {
-		reportError(w, "Error JSONing", err)
-		return
-	}
-
-	w.WriteHeader(http.StatusOK)
-	w.Header().Set("Content-Type", "application/json")
-	w.Write(b)
+	sendDataResponse(w, links)
 }
 
 // CreateLink creates link in DB from POSTed JSON
@@ -64,19 +68,10 @@ func (lc *LinksController) CreateLink(w http.ResponseWriter, rq *http.Request) {
 		return
 	}
 
-	resp := models.Response{
+	sendDataResponse(w, models.Response{
 		Message: fmt.Sprintf("New Link `%s` was created", model.Title),
 		Status:  true,
-	}
-	ba, err := json.Marshal(&resp)
-	if err != nil {
-		reportError(w, "Can't serialize positive JSON response", err)
-		return
-	}
-
-	w.WriteHeader(http.StatusOK)
-	w.Header().Set("Content-Type", "application/json")
-	w.Write(ba)
+	})
 }
 
 // SetLinkCategory set category for specific Link

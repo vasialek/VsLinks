@@ -91,6 +91,29 @@ func GetAllLinks() ([]models.Link, error) {
 	return list, nil
 }
 
+// GetUserLinks returns all links which belongs to user
+func (lr *LinkRepository) GetUserLinks(userID string) (links []models.Link, err error) {
+	db, err := lr.getDatabaseClient()
+	if err != nil {
+		return links, err
+	}
+
+	fmt.Printf("Searching Link by UserID `%s`\n", userID)
+	val := map[string]models.Link{}
+	if err = db.Child("links").OrderBy("user_id").EqualTo(userID).Value(&val); err != nil {
+		log.Printf("LinkRepository::GetUserLinks: error getting Links by UserID. %s\n", err)
+		return links, err
+	}
+
+	fmt.Printf("Got %d links for user", len(val))
+
+	for _, v := range val {
+		links = append(links, v)
+	}
+
+	return links, nil
+}
+
 // SetLinkCategory sets LinkCategory for existing link
 func (lr *LinkRepository) SetLinkCategory(linkID, categoryID string) error {
 	link, err := lr.GetLink(linkID)
